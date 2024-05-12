@@ -1,5 +1,5 @@
 body {
-    background: #000a2e;
+    background: hwb(227 56% 13%);
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -184,3 +184,13 @@ h1 {
     width: 64px; /* Adjust size of the play button */
     height: 64px; /* Adjust size of the play button */
 }
+
+.scripts-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .scripts-container script {
+    flex: 1 0 calc(33.33% - 20px); /* Tres columnas con un espacio entre ellas */
+    margin: 10px; /* Espacio entre los scripts */
+  }

@@ -4,6 +4,7 @@ var width = 600;
 var height = 400;
 var radius = Math.min(width, height) / 2;
 
+
 // Seleccionar el contenedor del gráfico
 var svg = d3.select("#grafico")
     .append("svg")
@@ -29,11 +30,11 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
     ];
 
     // Crear una función de color
-    var color = d3.scaleOrdinal(["#4CAF50", "#F44336"]);
+    var color = d3.scaleOrdinal(["#9bce9d", "#605252"]);
 
     // Crear el generador de arcos
     var arc = d3.arc()
-        .innerRadius(0)
+        .innerRadius(75)
         .outerRadius(radius);
 
     // Crear el generador de pie
@@ -60,7 +61,9 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
         })
         .attr("text-anchor", "middle")
         .text(function(d) { return d.data.etiqueta; });
+    
 });
+
 
 // Grafico de contagios por edades
 
@@ -109,7 +112,7 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
 
     // Crear el generador de arco
     var arc = d3.arc()
-        .innerRadius(0)
+        .innerRadius(75)
         .outerRadius(radius);
 
     // Crear el generador de pie
@@ -136,9 +139,12 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
         })
         .attr("text-anchor", "middle")
         .text(function(d) { return d.data.etiqueta; });
+    
+    
 });
 
-// Grafico de muertes en los meses
+
+// Gráfico de distribución de muertes por meses
 
 // Leer el archivo CSV
 d3.csv("covid_2023_ref.csv").then(function(data) {
@@ -177,7 +183,101 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
 
     // Crear el generador de arco
     var arc = d3.arc()
-        .innerRadius(0)
+        .innerRadius(75)
+        .outerRadius(radius);
+
+    // Crear el generador de pie
+    var pie = d3.pie()
+        .value(function(d) { return d.valor; });
+
+    // Construir los arcos del gráfico de pastel
+    var arcs = svgPieMuertes.selectAll("arc")
+        .data(pie(datasetPieMuertes))
+        .enter()
+        .append("g")
+        .attr("class", "arc");
+
+    // Dibujar los arcos del gráfico de pastel
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("fill", function(d, i) { return color(i); });
+
+    // Agregar eventos de mouseover y mouseout a los arcos
+    arcs.on("mouseover", function(d) {
+            var etiqueta = d.data.etiqueta;
+            var valor = d.data.valor;
+            d3.select(this).append("text")
+                .text(etiqueta + ": " + valor)
+                .attr("text-anchor", "middle")
+                .attr("dy", ".35em");
+        })
+        .on("mouseout", function() {
+            d3.select(this).select("text").remove();
+        });
+
+});
+
+// Función para obtener el nombre del mes a partir de su número
+function obtenerNombreMes(numeroMes) {
+    var meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    return meses[numeroMes];
+}
+
+
+// Distribución de muertes por rango etarios
+
+// Leer el archivo CSV
+d3.csv("covid_2023_ref.csv").then(function(data) {
+    // Filtrar los datos para obtener solo los casos de muerte por COVID-19
+    var muertesCovid = data.filter(function(d) {
+        return d.Muerte_covid === "TRUE";
+    });
+
+    // Definir los rangos etarios
+    var rangosEtarios = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90+"];
+
+    // Contar las muertes en cada rango etario
+    var conteoPorRango = {};
+    rangosEtarios.forEach(function(rango) {
+        conteoPorRango[rango] = 0;
+    });
+
+    muertesCovid.forEach(function(caso) {
+        var edad = +caso.Edad;
+        var rango;
+        if (edad < 10) {
+            rango = "0-9";
+        } else if (edad >= 90) {
+            rango = "90+";
+        } else {
+            var inicio = Math.floor(edad / 10) * 10;
+            rango = inicio + "-" + (inicio + 9);
+        }
+        conteoPorRango[rango]++;
+    });
+
+    // Crear un array de objetos con la estructura necesaria para el gráfico de pastel
+    var datasetPieMuertes = rangosEtarios.map(function(rango) {
+        return { etiqueta: rango, valor: conteoPorRango[rango] };
+    });
+
+    // Crear una función de color
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // Seleccionar el contenedor del gráfico
+    var svgPieMuertes = d3.select("#grafico-rangos")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    // Crear el generador de arco
+    var arc = d3.arc()
+        .innerRadius(75)
         .outerRadius(radius);
 
     // Crear el generador de pie
@@ -197,21 +297,25 @@ d3.csv("covid_2023_ref.csv").then(function(data) {
         .attr("fill", function(d, i) { return color(i); });
 
     // Agregar etiquetas al gráfico de pastel
-    arcs.append("text")
-        .attr("transform", function(d) {
-            var centroid = arc.centroid(d);
-            return "translate(" + centroid[0] + "," + centroid[1] + ")";
+    
+    
+    arcs.on("mouseover", function(d) {
+            var etiqueta = d.data.etiqueta;
+            var valor = d.data.valor;
+            d3.select(this).append("text")
+                .text(etiqueta + ": " + valor)
+                .attr("text-anchor", "middle")
+                .attr("dy", ".35em");
         })
-        .attr("text-anchor", "middle")
-        .text(function(d) { return d.data.etiqueta; });
+        .on("mouseout", function() {
+            d3.select(this).select("text").remove();
+        });
+
+    
+
 });
 
-// Función para obtener el nombre del mes a partir de su número
-function obtenerNombreMes(numeroMes) {
-    var meses = [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
-    return meses[numeroMes];
-}
+
+
+
 

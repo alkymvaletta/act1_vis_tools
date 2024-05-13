@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Estadisticas del COVID en Colombia 2023</title>
-        <!-- <link rel="stylesheet" href="styles.css" /> -->
-        <style>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estadisticas del COVID en Colombia 2023</title>
+    <style>
         body {
             background-image: url("ruta/a/la/imagen/relacionada/con/covid.jpg");
             background-size: cover;
@@ -13,63 +13,107 @@
             background-attachment: fixed;
             padding: 20px;
         }
-        </style>
-        <!-- Importa D3.js -->
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-    </head>
-    <body>
-        <div>
-            <center>
+    </style>
+    <!-- Importa D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <center>
             <img id="logo" alt="logo" src="src\coronavirus-2.tmb-1024v.jpg" style="max-width: 320px" />
-            </center>
-            <h1><center>Estadísticas del COVID en Colombia 2023</center></h1>
-            <div>
-                <p>
+        </center>
+        <h1>
+            <center>Estadísticas del COVID en Colombia 2023</center>
+        </h1>
+        <div>
+            <p>
                 Este sitio presenta las estadisticas del COVID en Colombia durante el
                 año 2023.
-                </p>
-                <p>
+            </p>
+            <p>
                 Los datos provienen de open data y se muestran en tablas y gráficos
                 interactivos para facilitar su comprensión.
-                </p>
-                <p>
+            </p>
+            <p>
                 Explore las diferentes metricas, tendencias y análisis para obtener
                 información detallada sobre la situación del COVID en Colombia.
-                </p>
-            </div>
+            </p>
         </div>
-        
-        <div>
-            <script src="mapa.js"></script>
-        </div>
-        <div>
-            <script src="script_pie.js"></script>
-        </div>
-            
-            <script src="script3.js"></script>
-            <!-- grafico barras casos por depto -->
-            <script src="casos_depto.js"></script>
-            <!-- Añade más scripts según sea necesario -->
-        </div>
-        <div class="video-container">
-            <a
-            href="https://www.youtube.com/watch?v=1mrwscm_fRY"
-            target="_blank"
-            title="Covid"
-            >
-            <img
-                src="src\logotipo-rojo-youtube.avif"
-                alt="Covid"
-                title="Covid"
-                style="max-width: 320px"
-            />
-            </a>
-            <svg class="play-button" viewBox="0 0 200 200" alt="Play video">
-            <circle cx="100" cy="100" r="90" fill="#333" fill-opacity="0.6" />
-            <polygon points="70, 55 70, 145 145, 100" fill="white" />
-            </svg>
-        </div>
-        </div>
-        <!-- Aquí puedes agregar cualquier otro contenido HTML que desees -->
-    </body>
+    </div>
+    <div>
+        <!-- Se agrega video de youtube -->
+        <center>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/1mrwscm_fRY?si=cM3XR-5xcdRbzJQz"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </center>
+    </div>
+
+    <!-- Se agrega graficos de pie -->
+    <h2>
+        <center>Distribución de recuperados y fallecidos por Covid en 2023</center>
+    </h2>
+    <center>
+        <div id="grafico"></div>
+    </center>
+    <div>
+        Este gráfico de pastel compara la distribución de casos de COVID-19 entre recuperados y fallecidos durante el
+        año 2023. Los datos se han clasificado en dos categorías principales: 'Recuperados' y 'Fallecidos'. Cada segmento del
+        pastel representa una de estas categorías, mostrando la proporción de personas que se han recuperado de la enfermedad y
+        la proporción de personas que han fallecido debido al virus. Esta visualización proporciona una perspectiva clara
+        de la diferencia en el desenlace de los casos de COVID-19 durante el periodo analizado.
+    </div>
+    <h2>
+        <center>Distribución de contagios por edades en rangos de 10 años</center>
+    </h2>
+    <center>
+        <div id="grafico-edades"></div>
+    </center>
+    <div>
+        Este gráfico de pastel muestra la distribución de contagios por COVID-19 en diferentes rangos de edades. Los datos se
+        han agrupado en intervalos de 10 años, desde 0 a 9 años hasta 90 años en adelante. Cada sector del pastel representa un
+        rango de edad, y el tamaño del sector indica la proporción de contagios en ese grupo de edad.</p>
+    </div>
+    <h2>
+        <center>Distribución de muertes por edades en rangos de 10 años</center>
+    </h2>
+    <center>
+        <div id="grafico-rangos"></div>
+    </center>
+    <div>
+        El gráfico de pastel muestra la distribución de las muertes por COVID-19 en diferentes rangos etarios. Cada
+        sector del pastel representa un rango de edad, que va desde los 0 a 9 años hasta los 90 años o más. El tamaño de cada
+        sector indica la proporción de muertes en ese rango etario con respecto al total de muertes registradas. Esta visualización
+        proporciona una rápida comprensión de cómo se distribuyen las muertes por COVID-19 entre diferentes grupos de edad.
+    </div>
+    <h2>
+        <center>Districión de las muertes a lo largo de los meses</center>
+    </h2>
+    <center>
+        <div id="grafico-muertes"></div>
+    </center>
+    <div>
+        Este gráfico de pastel muestra la distribución de muertes por COVID-19 a lo largo de los meses del año. Cada
+        sector del pastel representa un mes, y el tamaño del sector indica la proporción de muertes ocurridas en ese mes. Esta
+        visualización nos permite entender cómo se distribuyen las muertes a lo largo del año y identificar posibles patrones 
+        estacionales en la mortalidad por COVID-19
+    </div>
+    <script src="script_pie.js"></script>
+    <!-- Se agrega mapa -->
+    <div>
+        <script src="mapa.js"></script>
+    </div>
+
+    <script src="script3.js"></script>
+    <!-- grafico barras casos por depto -->
+    <script src="casos_depto.js"></script>
+    <!-- Añade más scripts según sea necesario -->
+    </div>
+    </div>
+    <!-- Aquí puedes agregar cualquier otro contenido HTML que desees -->
+
+</body>
+
 </html>
